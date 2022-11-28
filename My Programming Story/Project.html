@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<!-- saved from url=(0172)file:///C:/Users/skdms/OneDrive/%EB%B0%94%ED%83%95%20%ED%99%94%EB%A9%B4/2022/%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B7%B8%EB%9E%98%ED%94%BD%EC%8A%A4/Week01/project/scene_final.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <title>Project</title>
+        <style>
+            button {
+                width: 80px;
+                height: 80px; 
+                margin-top: 50px;
+                border-radius: 20px;
+                font-size: 30px;
+                box-shadow : 2px 2px 2px black, 
+                            0 0 25px blue,
+                            0 0 5px darkblue;
+            }
+            #start { 
+                width: 300px;
+                margin-right: 100px;
+            }
+        </style>
+        <script id="colorVS" type="x-shader/x-vertex">
+            attribute vec4 vPosition;
+
+            uniform mat4 modelMatrix, viewMatrix, projectionMatrix;
+            
+            void main() {
+                gl_Position = projectionMatrix * viewMatrix * modelMatrix * vPosition;
+            }
+        </script>
+
+        <script id="colorFS" type="x-shader/x-fragment">
+            precision mediump float;
+            
+            uniform vec4 uColor;
+            
+            void main() {
+                gl_FragColor = uColor;
+            }
+        </script>
+
+        <script id="phongVS" type="x-shader/x-vertex">
+        attribute vec4 vPosition;
+        attribute vec4 vNormal;
+
+        uniform mat4 modelMatrix, viewMatrix, projectionMatrix;
+        
+        varying vec3 fNormal, fWorldPos;
+
+        void main() {
+            gl_Position = projectionMatrix * viewMatrix * modelMatrix * vPosition;
+            
+            fNormal = normalize(mat3(modelMatrix) * vNormal.xyz);
+            fWorldPos = (modelMatrix * vPosition).xyz;
+        }
+        </script>
+
+        <script id="phongFS" type="x-shader/x-fragment">
+            precision mediump float;
+        varying vec3 fNormal, fWorldPos;
+
+        uniform vec3 eyePos;
+        uniform vec4 lightSrc, ambientProduct, diffuseProduct, specularProduct;
+        uniform float shininess;
+
+        uniform float fogStart, fogEnd;
+        uniform vec4 fogColor;
+        
+        void main() {
+            vec3 N = normalize(fNormal);
+            vec3 L = normalize(lightSrc.xyz);
+            float kd = max(dot(L, N), 0.0);
+            vec4 diffuse = kd * diffuseProduct;
+
+            vec3 V = normalize(eyePos - fWorldPos);
+            vec3 H = normalize(L + V);
+            float ks = pow(max(dot(N, H), 0.0), shininess);
+            vec4 specular = ks * specularProduct;
+
+            float fogDepth = length(eyePos - fWorldPos);
+            float fogFactor = smoothstep(fogStart, fogEnd, fogDepth);
+
+            //gl_FragColor = ambientProduct + diffuse + specular;
+            vec4 color = ambientProduct + diffuse + specular;
+            gl_FragColor = mix(color, fogColor, fogFactor);
+            gl_FragColor.a = 1.0;
+        }
+        </script>
+
+        <script id="texMapVS" type="x-shader/x-vertex">
+            attribute vec4 vPosition;
+            attribute vec4 vNormal;
+            attribute vec2 vTexCoord;
+
+            uniform mat4 modelMatrix, viewMatrix, projectionMatrix;
+
+            varying vec2 fTexCoord;
+            varying vec3 fNormal, fWorldPos;
+
+            void main(){
+                gl_Position = projectionMatrix * viewMatrix * modelMatrix * vPosition;
+
+                fNormal = normalize(mat3(modelMatrix) * vNormal.xyz);
+                fWorldPos = (modelMatrix * vPosition).xyz;
+                fTexCoord = vTexCoord;
+            }
+        </script>
+
+        <script id="texMapFS" type="x-shader/x-fragment">
+            precision mediump float;
+
+            uniform sampler2D texture;
+            varying vec2 fTexCoord;
+            varying vec3 fNormal, fWorldPos;
+
+            uniform vec3 eyePos;
+            uniform vec4 lightSrc, ambientProduct, diffuseProduct, specularProduct;
+            uniform float shininess;
+
+            uniform float fogStart, fogEnd;
+            uniform vec4 fogColor;
+
+            void main(){
+                vec3 N = normalize(fNormal);
+                vec3 L = normalize(lightSrc.xyz);
+                float kd = max(dot(L, N), 0.0);
+                vec4 diffuse = kd * diffuseProduct;
+
+                vec3 V = normalize(eyePos - fWorldPos);
+                vec3 H = normalize(L + V);
+                float ks = pow(max(dot(N, H), 0.0), shininess);
+                vec4 specular = ks * specularProduct;
+
+                float fogDepth = length(eyePos - fWorldPos);
+                float fogFactor = smoothstep(fogStart, fogEnd, fogDepth);
+    
+                //gl_FragColor = (ambientProduct + diffuse + specular) * texture2D(texture, fTexCoord);
+                vec4 color = (ambientProduct + diffuse + specular) * texture2D(texture, fTexCoord);
+                gl_FragColor = mix(color, fogColor, fogFactor);
+                gl_FragColor.a = 1.0;
+            }
+        </script>
+
+        <script type="text/javascript" src="./Project_files/webgl-utils.js.다운로드"></script>
+        <script type="text/javascript" src="./Project_files/initShaders.js.다운로드"></script>
+        <script type="text/javascript" src="./Project_files/MV.js.다운로드"></script>
+        <script type="text/javascript" src="./Project_files/trackball.js.다운로드"></script>
+        <script type="text/javascript" src="./Project_files/scene_final.js.다운로드"></script>
+    </head>
+    <body id="body">
+        <canvas id="gl-canvas" width="1300" height="800">
+            Oops... your browser doesn't support the HTML5 canvas element!
+        </canvas>
+        <div style="width: 1300; text-align:center;">
+            <button id="start">Game Start</button>
+            <button id="left">◀</button>
+            <button id="up">▲</button>
+            <button id="right">▶</button>
+            <button id="down">▼</button>
+        </div>
+        <div>
+            <img src="./Project_files/block.bmp" hidden="">
+            <img src="./Project_files/stick.bmp" hidden="">
+        </div>
+    
+</body></html>

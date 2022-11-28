@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My programming Story</title>
+    <style>@import url(project.css);</style>
+        
+</head>
+
+<body>
+    <header id="header" style="margin: 0 auto ;">
+        <ul>
+            <div id="header_left">
+              <li><a href="">스토어</a></li>
+            </div>
+            <div id="header_right">
+              <li><a href="">이미지</a></li>
+              <li><a href="">마이페이지</a></li>
+            </div>
+          </ul>
+    </header>
+    
+    <div id="title">
+        <img id="titleImg" src="image/title.jpg">
+        <h2 id="titleTxt">My programming story</h2>
+    </div>
+
+
+    <div id="tab">
+        <ul class="tabnav">
+            <li class="tab-link current" data-tab="tab-1">Project</li>
+            <li class="tab-link" data-tab="tab-2">Dubegging</li>
+            <li class="tab-link" data-tab="tab-3">Community</li>
+            <li class="tab-link" data-tab="tab-4">About Me</li>
+        </ul>
+    </div>
+
+    <div id="tab-1" class="tab-content current">
+        <div id="scholar" class="projectCont">
+            <img src="image/android.png">
+            <p>안드로이드 스튜디오를 활용한<br>맞춤 장학금 추천 애플리케이션</p>
+        </div>
+        <div id="webgl" class="projectCont">
+            <img src="image/webgl.png" style="margin-top: 40px;">
+            <p>WebGL을 활용한 장애물 피하기 게임</p>
+        </div>
+        <div id="mqtt" class="projectCont">
+            <img src="image/mqtt.png" style="margin-top: 40px;">
+            <p>IoT MQTT 프로토콜을 사용하여<br>전국 공항 주차장 혼잡도</p>
+        </div>
+    </div>
+
+
+    <div id="tab-2" class="tab-content">
+        <div id="fragerr" class="projectCont">
+            <img src="image/android.png">
+            <p>Fragment 안에 Fragment 구현 오류</p>
+        </div>
+        <div id="fireerr" class="projectCont">
+            <img src="image/android.png">
+            <p>Firebase에서 데이터 가져올 때 자주 발생하는 오류</p>
+        </div>
+        <div id="webglerr" class="projectCont">
+            <img src="image/webgl.png" style="margin-top: 40px;">
+            <p>WebGL을 활용시 vertex에서 자주 발생하는 오류</p>
+        </div>
+        <div id="mqtterr" class="projectCont">
+            <img src="image/mqtt.png" style="margin-top: 40px;">
+            <p>MQTT 프로토콜 사용시 Publish 오류</p>
+        </div>
+    </div>
+
+
+    <div id="tab-3" class="tab-content">
+        <table  class="board">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>날짜</th>
+                    <th>조회수</th>
+                </tr>
+            </thead>
+            <tbody id="boa">
+                <tr>
+                    <td>1</td>
+                    <td class="a">혹시 도와주실 분 ㅜㅜㅜ</td>
+                    <td>짜장면주세용</td>
+                    <td>2022.05.01</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td class="a">HTML 관련해서 물어볼게 있습니다!</td>
+                    <td>코딩천재</td>
+                    <td>2022.05.19</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td class="a">CSS 공부는 어떻게 하시나요?</td>
+                    <td>뚱이</td>
+                    <td>2022.06.12</td>
+                    <td>20</td>
+                </tr>
+            </tbody>
+        </table>
+
+        
+            <br><br><br><br>
+            <h1 style="font-size: 40px;">글 작성하기</h1>
+            <table class="input">
+                <tr>
+                    <th>제목</th>
+                    <td style="text-align: left;"><input id="boardtitle" type="text"></td>
+                </tr>
+                <tr>
+                    <th>내용</th>
+                    <td><textarea id="boardcont" cols="120"rows="40"></textarea></td>
+                </tr>
+            </table>
+            <input type="button" value="작성하기" onclick="upload()">
+        </form>
+    </div>
+
+    <div id="tab-4" class="tab-content">
+        <div>
+            <table id="me">
+                <tr>
+                    <td rowspan="4"><div id="imgbox"><img src="image/me.jpg"></div></td>
+                    <td>Kim Na Eun</td>
+                </tr>
+                <tr>
+                    <td>Compuer Engineering</td>
+                </tr>
+                <tr>
+                    <td>skdms8827@naver.com</td>
+                </tr>
+                <tr>
+                    <td>Git Adress</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('ul.tabnav li').click(function () {
+                var tab_id = $(this).attr('data-tab');
+
+                $('ul.tabnav li').removeClass('current');
+                $('.tab-content').removeClass('current');
+
+                $(this).addClass('current');
+                $("#" + tab_id).addClass('current');
+            });
+
+            $('#scholar').click(function () {
+                window.open("scholar.html", "_self");
+            });
+            $('#webgl').click(function () {
+                window.open("Project.html", "_self");
+            });
+            $('#mqtt').click(function () {
+                window.open("mqtt.html", "_self");
+            });
+            $('#fragerr').click(function () {
+                window.open("https://ddangeun.tistory.com/127", "_self");
+            });
+            $('#mqtterr').click(function () {
+                window.open("https://m.blog.naver.com/anima11x/221848344023", "_self");
+            });
+            $('#fireerr').click(function () {
+                window.open("https://velog.io/@kkll135/FireBase-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B0%80%EC%A0%B8%EC%98%A4%EA%B8%B0", "_self");
+            });
+            $('#webglerr').click(function () {
+                window.open("https://rgy0409.tistory.com/2370", "_self");
+            });
+        });
+    </script>
+    <script>
+        function upload() {
+            var title = document.getElementById("boardtitle");
+            var content = document.getElementById("boardcont");
+            var table = document.getElementById("boa");
+            
+
+            var tr = document.createElement("tr");    
+            var td1 = document.createElement("td");
+            var td2 = document.createElement("td");
+            var td3 = document.createElement("td");
+            var td4 = document.createElement("td");
+            var td5 = document.createElement("td");
+
+            td2.className = "a";
+
+            td1.innerText = "4";
+            td2.innerText = title.value;
+            td3.innerText = "에루붕붕";
+            td4.innerText = "2020.06.12";
+            td5.innerText = "0";
+
+            content.value = "";
+            title.value = "";
+
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+            tr.appendChild(td4);
+            tr.appendChild(td5);
+            table.appendChild(tr);
+
+            
+
+            
+        }
+    </script>
+
+
+
+
+
+
+
+</body>
+
+</html>
